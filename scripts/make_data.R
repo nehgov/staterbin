@@ -109,7 +109,7 @@ sqdf <- centroids |>
 ## -----------------------------------------------------------------------------
 
 st_write(sqdf, dsn = file.path(geo_dir, "staterbin.geojson"),
-         layer = "staterbin.geojson", append = FALSE)
+         delete_dsn = TRUE, layer = "staterbin.geojson", append = FALSE)
 
 ## -----------------------------------------------------------------------------
 ## end script
