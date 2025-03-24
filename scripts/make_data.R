@@ -24,10 +24,18 @@ scr_dir <- file.path(root, "scripts")
 ## -----------------------------------------------------------------------------
 
 ## function to create rounded corner squares of a specific size
+##
+## The outer_side is the length of the main square, representing the limits of
+## the final size. The corner radius is the size of the radius of the four
+## circles that are tangent to the outer circle in the corners. The radius is
+## the line that extends from the corner of an inner square / center point of
+## the circle to the edge (tangent) of the outer square.
+##
+## A larger corner radius value will make the corners more rounded.
 
-rsquare_from_point <- function(sfpoint, outer_side = 1, corner_radius = 1/10) {
+rsquare_from_point <- function(sfpoint, outer_side = 1, corner_radius_frac = 1/3) {
   a <- outer_side
-  r <- corner_radius
+  r <- a * corner_radius_frac
   x <- st_coordinates(sfpoint)[,1]
   y <- st_coordinates(sfpoint)[,2]
   pol <- vector("list", length(x))
@@ -94,16 +102,14 @@ centroids <- tibble(stabbr = c("AL", "AK", "AZ", "AR", "CA", "CO",
 ## -----------------------------------------------------------------------------
 
 sqdf <- centroids |>
-  mutate(geometry = rsquare_from_point(geometry, 0.9, .25))
-
-ggplot(sqdf) + geom_sf()
+  mutate(geometry = rsquare_from_point(geometry, 0.9, 0.9/3))
 
 ## -----------------------------------------------------------------------------
 ## write
 ## -----------------------------------------------------------------------------
 
 st_write(sqdf, dsn = file.path(geo_dir, "staterbin.geojson"),
-         layer = "staterbin.geojson")
+         layer = "staterbin.geojson", append = FALSE)
 
 ## -----------------------------------------------------------------------------
 ## end script
