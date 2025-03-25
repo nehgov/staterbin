@@ -34,3 +34,9 @@ To build the `geojson` and `topojson` files, make `./scripts` the working
 directory, and run `make_geo_data.R`.
 
 To create the example figures, next run `make_example_figures.R`.
+
+# Acknowledgements
+
+The arrangement of the map tiles is modified from code provided in the
+[statebins](https://github.com/hrbrmstr/statebins) R package.
+
