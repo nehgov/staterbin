@@ -1,7 +1,7 @@
 ## -----------------------------------------------------------------------------
 ##
-## [ PROJ ] stateterbin
-## [ FILE ] make_data.R
+## [ PROJ ] staterbin
+## [ FILE ] make_geo_data.R
 ## [ AUTH ] Benjamin Skinner; bskinner@neh.gov
 ## [ INIT ] 20 March 2025
 ##
@@ -14,8 +14,6 @@ sapply(libs, require, character.only = TRUE)
 ## paths
 args <- commandArgs(trailingOnly = TRUE)
 root <- ifelse(length(args) == 0, file.path(".."), args)
-dat_dir <- file.path(root, "data")
-fig_dir <- file.path(root, "figures")
 geo_dir <- file.path(root, "geo")
 scr_dir <- file.path(root, "scripts")
 
