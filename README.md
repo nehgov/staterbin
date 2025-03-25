@@ -1,4 +1,4 @@
-# Create state and territory square map files
+# State and territory cartogram heatmap files
 
 Cartogram heatmaps like those created with the
 [statebins](https://github.com/hrbrmstr/statebins) R package usefully preserve
@@ -11,9 +11,26 @@ Northern Mariana Islands, Puerto Rico, and the U.S. Virgin Islands.
 
 Pre-built spatial files are located in the `geo` directory.
 
-
+# Examples
 **GeoJSON**
 ![Figure using GeoJSON file](figures/geojson_figure.png)
 
 **TopoJSON**
 ![Figure using TopoJSON file](figures/topojson_figure.png)
+
+# Building the files
+
+## Required packages
+
+- `tidyverse`
+- `sf`
+- `geojsonio`
+- `crosswalkr`
+- `viridis`
+
+## To build
+
+To build the `geojson` and `topojson` files, make `./scripts` the working
+directory, and run `make_geo_data.R`.
+
+To create the example figures, next run `make_example_figures.R`.
