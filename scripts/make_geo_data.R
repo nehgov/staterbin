@@ -7,8 +7,7 @@
 ##
 ## -----------------------------------------------------------------------------
 
-## libraries
-## (also requires sf, geojsonio, and crosswalkr are installed)
+## libraries (also requires sf, geojsonio, and crosswalkr be installed)
 libs <- c("tidyverse")
 sapply(libs, require, character.only = TRUE)
 
