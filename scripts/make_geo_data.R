@@ -8,7 +8,8 @@
 ## -----------------------------------------------------------------------------
 
 ## libraries
-libs <- c("tidyverse", "sf")
+## (also requires sf, geojsonio, and crosswalkr are installed)
+libs <- c("tidyverse")
 sapply(libs, require, character.only = TRUE)
 
 ## paths
@@ -31,11 +32,12 @@ scr_dir <- file.path(root, "scripts")
 ##
 ## A larger corner radius value will make the corners more rounded.
 
-rsquare_from_point <- function(sfpoint, outer_side = 1, corner_radius_frac = 1/3) {
+rsquare_from_point <- function(sfpoint, outer_side = 1,
+                               corner_radius_frac = 1/3) {
   a <- outer_side
   r <- a * corner_radius_frac
-  x <- st_coordinates(sfpoint)[,1]
-  y <- st_coordinates(sfpoint)[,2]
+  x <- sf::st_coordinates(sfpoint)[,1]
+  y <- sf::st_coordinates(sfpoint)[,2]
   pol <- vector("list", length(x))
   for (i in 1:length(pol)) {
     ## make circle centroids (corners of inner square)
@@ -53,17 +55,18 @@ rsquare_from_point <- function(sfpoint, outer_side = 1, corner_radius_frac = 1/3
     lll <- c(ll - c(r,0))
     lul <- c(ul - c(r,0))
     ## make circles
-    ulc <- st_buffer(st_point(ul), r)
-    urc <- st_buffer(st_point(ur), r)
-    lrc <- st_buffer(st_point(lr), r)
-    llc <- st_buffer(st_point(ll), r)
+    ulc <- sf::st_buffer(sf::st_point(ul), r)
+    urc <- sf::st_buffer(sf::st_point(ur), r)
+    lrc <- sf::st_buffer(sf::st_point(lr), r)
+    llc <- sf::st_buffer(sf::st_point(ll), r)
     ## make polygon from strings
-    hex <- st_polygon(list(rbind(tul, tur, rur, rlr, blr, bll, lll, lul, tul)))
+    inner_hex_str <- list(rbind(tul, tur, rur, rlr, blr, bll, lll, lul, tul))
+    hex <- sf::st_polygon(inner_hex_str)
     ## join
-    out <- Reduce("st_union", list(hex, ulc, urc, lrc, llc))
-    pol[[i]] <- st_cast(out, "POLYGON")
+    out <- purrr::reduce(list(hex, ulc, urc, lrc, llc), sf::st_union)
+    pol[[i]] <- sf::st_cast(out, "POLYGON")
   }
-  return(st_sfc(pol))
+  return(sf::st_sfc(pol))
 }
 
 ## -----------------------------------------------------------------------------
@@ -93,7 +96,12 @@ centroids <- tibble(stabbr = c("AL", "AK", "AZ", "AR", "CA", "CO",
                           5L, 3L, 6L, 3L, 6L, 5L, 2L, 5L, 5L, 5L,
                           3L, 5L, 3L, 1L, 4L, 7L, 4L, 6L, 4L, 7L,
                           5L, 2L, 1L, 1L, 2L, 3L)) |>
-  st_as_sf(coords = c("x", "y"))
+  sf::st_as_sf(coords = c("x", "y")) |>
+  left_join(crosswalkr::sttercrosswalk |>
+              select(stabbr, stfips)) |>
+  arrange(stfips) |>
+  mutate(id = row_number()) |>
+  select(id, stfips, stabbr, geometry)
 
 ## -----------------------------------------------------------------------------
 ## make map
@@ -106,8 +114,15 @@ sqdf <- centroids |>
 ## write
 ## -----------------------------------------------------------------------------
 
-st_write(sqdf, dsn = file.path(geo_dir, "staterbin.geojson"),
-         delete_dsn = TRUE, layer = "staterbin.geojson", append = FALSE)
+## geojson (lightweight)
+sf::st_write(sqdf, dsn = file.path(geo_dir, "staterbin.geojson"),
+             delete_dsn = TRUE, layer = "staterbin", append = FALSE)
+
+## topojson (very lightweight)
+geojsonio::topojson_write(sqdf, geometry = "polygon",
+                          file = file.path(geo_dir, "staterbin.topojson"),
+                          quantization = 1e4,
+                          object_name = "staterbin")
 
 ## -----------------------------------------------------------------------------
 ## end script
