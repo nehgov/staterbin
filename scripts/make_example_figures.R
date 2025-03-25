@@ -48,7 +48,6 @@ gg <- dfg |>
   geom_sf(aes(fill = as_factor(bin))) +
   geom_sf_text() +
   viridis::scale_fill_viridis("", option = "A", discrete = TRUE, alpha = 0.5) +
-  labs(title = "Figure using GeoJSON") +
   theme_void()
 
 ## topojson
@@ -57,7 +56,6 @@ gt <- dft |>
   geom_sf(aes(fill = as_factor(bin))) +
   geom_sf_text() +
   viridis::scale_fill_viridis("", option = "A", discrete = TRUE, alpha = 0.5) +
-  labs(title = "Figure using TopoJSON") +
   theme_void()
 
 ## -----------------------------------------------------------------------------
@@ -65,7 +63,7 @@ gt <- dft |>
 ## -----------------------------------------------------------------------------
 
 ## geojson
-ggsave(file.path(fig_dir, "geojson_figure.png"),
+ggsave(file.path(fig_dir, "geojson_figure.pdf"),
        gg,
        width = 16,
        height = 9,
@@ -73,7 +71,7 @@ ggsave(file.path(fig_dir, "geojson_figure.png"),
        dpi = "retina")
 
 ## topojson
-ggsave(file.path(fig_dir, "topojson_figure.png"),
+ggsave(file.path(fig_dir, "topojson_figure.pdf"),
        gt,
        width = 16,
        height = 9,
