@@ -63,7 +63,7 @@ gt <- dft |>
 ## -----------------------------------------------------------------------------
 
 ## geojson
-ggsave(file.path(fig_dir, "geojson_figure.pdf"),
+ggsave(file.path(fig_dir, "geojson_figure.png"),
        gg,
        width = 16,
        height = 9,
@@ -71,7 +71,7 @@ ggsave(file.path(fig_dir, "geojson_figure.pdf"),
        dpi = "retina")
 
 ## topojson
-ggsave(file.path(fig_dir, "topojson_figure.pdf"),
+ggsave(file.path(fig_dir, "topojson_figure.png"),
        gt,
        width = 16,
        height = 9,

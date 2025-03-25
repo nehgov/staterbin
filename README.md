@@ -1,6 +1,8 @@
 # Create state and territory square map files
 
 
-![Figure using GeoJSON file](figures/geojson_figure.pdf)
+**GeoJSON**
+![Figure using GeoJSON file](figures/geojson_figure.png)
 
-![Figure using TopoJSON file](figures/topojson_figure.pdf)
+**TopoJSON**
+![Figure using TopoJSON file](figures/topojson_figure.png)
