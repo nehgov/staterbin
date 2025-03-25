@@ -68,7 +68,8 @@ ggsave(file.path(fig_dir, "geojson_figure.png"),
        width = 16,
        height = 9,
        units = "in",
-       dpi = "retina")
+       dpi = "retina",
+       bg = "white")
 
 ## topojson
 ggsave(file.path(fig_dir, "topojson_figure.png"),
@@ -76,7 +77,8 @@ ggsave(file.path(fig_dir, "topojson_figure.png"),
        width = 16,
        height = 9,
        units = "in",
-       dpi = "retina")
+       dpi = "retina",
+       bg = "white")
 
 ## -----------------------------------------------------------------------------
 ## end script
