@@ -1,4 +1,4 @@
-# State and territory tile choropleth files
+# State and territory tile files
 
 Tile choropleth like those created with the
 [statebins](https://github.com/hrbrmstr/statebins) R package usefully preserve
